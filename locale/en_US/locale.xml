@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
+
+<!--
+  * locale.xml
+  *
+  * Copyright (c) 2003-2009 John Willinsky
+  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
+  *
+  * Localization strings for the en_US (U.S. English) locale.
+  -->
+ 
+<locale name="en_US" full_name="U.S. English">
+  <message key="plugins.generic.awsummary.description">Displays a summary of AWStats figures. Requires external pre-processing.</message>
+  <message key="plugins.generic.awsummary">AWStats Summary</message>
+  <message key="plugins.generic.awsummary.enabled">The AWStats Summary Plugin has been enabled.</message>
+  <message key="plugins.generic.awsummary.disabled">The AWStats Summary Plugin has been disabled.</message>
+  <message key="plugins.generic.awsummary.1a.title">Journal Report 1 (R2): Full-Text Article Requests by Month and Journal</message>
+</locale>

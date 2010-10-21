@@ -1,0 +1,24 @@
+.awchart {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  width: 400px;
+  height: 250px;
+}
+.awtable {
+  border-collapse: collapse;
+  width: 380px;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.awtable th {
+  background-color: #ddd;
+  border-top: 1px solid #aaa;
+  border-bottom: 1px solid #aaa;
+  padding: 4px;
+}
+.awtable td {
+  background-color: #f4f4f4;
+  padding: 4px;
+}
