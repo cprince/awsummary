@@ -48,21 +48,43 @@
     function awswitch(dest) {
 
       switch(dest) {
-      case 'searchengines':
-        document.getElementById('incolink').style.visibility='hidden';
+      case 'awindex':
+        document.getElementById('awindex').style.display='block';
+        document.getElementById('seholder').style.display='none';
+        document.getElementById('domainholder').style.display='none';
+        document.getElementById('incoming').style.display='none';
         break;
-      case 'searchengines2':
-        document.getElementById('incolink').style.visibility='visible';
+      case 'searchengines':
+        document.getElementById('awindex').style.display='none';
+        document.getElementById('seholder').style.display='block';
+        document.getElementById('domainholder').style.display='none';
+        document.getElementById('incoming').style.display='none';
+        break;
+      case 'geographic':
+        document.getElementById('awindex').style.display='none';
+        document.getElementById('seholder').style.display='none';
+        document.getElementById('domainholder').style.display='block';
+        document.getElementById('incoming').style.display='none';
+        break;
+      case 'incoming':
+        document.getElementById('awindex').style.display='none';
+        document.getElementById('seholder').style.display='none';
+        document.getElementById('domainholder').style.display='none';
+        document.getElementById('incoming').style.display='block';
         break;
       default:
-        //code to be executed if n is different from case 1 and 2
+        //code to be executed
       }
     }
 </script>
 {/literal}
 
+<button onclick="awswitch('awindex')">Index</button>
 <button onclick="awswitch('searchengines')">Search Engine Searches</button>
-<button onclick="awswitch('searchengines2')">Search Engine Searches</button>
+<button onclick="awswitch('geographic')">Geographic</button>
+<button onclick="awswitch('incoming')">Incoming Links</button>
+
+<div id="awindex">
 
 <p>Reports on a small subset of AWStats data</p>
 
@@ -78,17 +100,18 @@
 {/foreach}
 </table>
 
-
-<table id="incolink" class="awtable" summary="Incoming Links">
-<tr><th>Incoming Links</th><th align="right">Count</th></tr>
-{foreach from=$topincoming item=inc key=ikey}
+<table class="awtable" summary="Popular Pages">
+<tr><th>Popular Pages</th><th align="right">Count</th></tr>
+{foreach from=$toppages item=inc key=ikey}
     <tr><td><a target="_blank" href="{$ikey}">{$ikey}</a></td><td align="right">{$inc}</td></tr>
 {/foreach}
 </table>
 
-<table class="awtable" summary="Popular Pages">
-<tr><th>Popular Pages</th><th align="right">Count</th></tr>
-{foreach from=$toppages item=inc key=ikey}
+</div>
+
+<table id="incoming" class="awtable" summary="Incoming Links">
+<tr><th>Incoming Links</th><th align="right">Count</th></tr>
+{foreach from=$topincoming item=inc key=ikey}
     <tr><td><a target="_blank" href="{$ikey}">{$ikey}</a></td><td align="right">{$inc}</td></tr>
 {/foreach}
 </table>
