@@ -44,8 +44,25 @@
 {literal}
         ]});
     };
+
+    function awswitch(dest) {
+
+      switch(dest) {
+      case 'searchengines':
+        document.getElementById('incolink').style.visibility='hidden';
+        break;
+      case 'searchengines2':
+        document.getElementById('incolink').style.visibility='visible';
+        break;
+      default:
+        //code to be executed if n is different from case 1 and 2
+      }
+    }
 </script>
 {/literal}
+
+<button onclick="awswitch('searchengines')">Search Engine Searches</button>
+<button onclick="awswitch('searchengines2')">Search Engine Searches</button>
 
 <p>Reports on a small subset of AWStats data</p>
 
@@ -62,7 +79,7 @@
 </table>
 
 
-<table class="awtable" summary="Incoming Links">
+<table id="incolink" class="awtable" summary="Incoming Links">
 <tr><th>Incoming Links</th><th align="right">Count</th></tr>
 {foreach from=$topincoming item=inc key=ikey}
     <tr><td><a target="_blank" href="{$ikey}">{$ikey}</a></td><td align="right">{$inc}</td></tr>
