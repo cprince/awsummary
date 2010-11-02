@@ -43,6 +43,8 @@
 {foreach from=$incomingsearch item=queries key=engine}"{$engine} ({$queries}%)",{/foreach}null
 {literal}
         ]});
+
+        awswitch('awindex');
     };
 
     function awswitch(dest) {
@@ -90,15 +92,15 @@
 
 <p><strong>Date of statistics:</strong> {$datedisplay}</p>
 
-<p><strong>Total pages viewed:</strong> {$totalpages}</p>
-
-<table style="width: 200px">
+<table style="width: 120px">
 {foreach from=$general item=gen key=section}
   {if array_key_exists($section, $metrics)}
     <tr><th>{$metrics[$section]}</th><td align="right">{$gen}</td></tr>
   {/if}
 {/foreach}
 </table>
+
+<p><strong>Total pages viewed:</strong> {$totalpages}</p>
 
 <table class="awtable" summary="Popular Pages">
 <tr><th>Popular Pages</th><th align="right">Count</th></tr>
