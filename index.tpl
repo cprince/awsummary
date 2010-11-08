@@ -82,15 +82,13 @@
 {/literal}
 
 <button onclick="awswitch('awindex')">Index</button>
-<button onclick="awswitch('searchengines')">Search Engine Searches</button>
+<button onclick="awswitch('searchengines')">Incoming Searches</button>
 <button onclick="awswitch('geographic')">Geographic</button>
 <button onclick="awswitch('incoming')">Incoming Links</button>
 
-<div id="awindex">
-
-<p>Reports on a small subset of AWStats data</p>
-
 <p><strong>Date of statistics:</strong> {$datedisplay}</p>
+
+<div id="awindex">
 
 <table style="width: 120px">
 {foreach from=$general item=gen key=section}
