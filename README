@@ -1,3 +1,5 @@
 AWStats integration for OJS 2.3.1
 
+version 0.5 is MVP Minimal Viable Plugin
+
 Scripts directory contains the SQL to hold the data and the PHP to process the AWStats data files.
