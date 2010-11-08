@@ -34,20 +34,6 @@ class awSummaryHandler extends Handler {
 	 * Display the summary page
 	 */
 	function index() {
-		$this->route('index');
-	}
-
-	/**
-	 * Display Search Engine Searches
-	 */
-	function searchengines() {
-		$this->route('searchengines');
-	}
-
-	/**
-	 * Main display function
-	 */
-	function route($display='index') {
 		$this->validate();
 		$this->setupTemplate();
 		$plugin =& $this->plugin;
@@ -93,17 +79,7 @@ class awSummaryHandler extends Handler {
 		$templateManager->assign_by_ref('domains', $this->domains);
 		$templateManager->assign_by_ref('metrics', $this->metrics);
 
-		switch ($display) {
-			case 'index':
-				$templateManager->display($plugin->getTemplatePath() . 'index.tpl');
-				break;
-			case 'trial':
-				$templateManager->display($plugin->getTemplatePath() . 'index.tpl');
-				break;
-			case 'searchengines':
-				$templateManager->display($plugin->getTemplatePath() . 'searchengines.tpl');
-				break;
-		}
+		$templateManager->display($plugin->getTemplatePath() . 'index.tpl');
 	}
 
 	/**
