@@ -17,8 +17,8 @@ $year = (int)substr($awname,9,4);
 $jpath = substr($awname,$firstdot,$seconddot-$firstdot);
 $journal_id = $journals[$jpath];
 
-$itemplate = "insert into awstats_summary (journal_id, year, month, section, rank, value1, value2, value3, value4)
-                 values (%s, %s, %s, '%s', %s, '%s', '%s', '%s', '%s');";
+$itemplate = "insert into $summarytablename (journal_id, year, month, section, rank, value1, value2, value3, value4)
+                 values (%d, %d, %d, '%s', %d, '%s', '%s', '%s', '%s');";
 
 if (!$f = fopen($filename,"r"))
 	die("could not open file\n");
@@ -36,41 +36,25 @@ do {
     if ($sectionName == 'POS_PLUGIN_geoip_city_maxmind') $cityPos = $sectionPos;
 } while ($line != 'END_MAP');
 
-fseek($f, $generalPos);
-$rank = 0;
-
-do {
-    $line = trim(fgets($f));
-    if ($line{0}=="#") continue;
-    list($general, $count) = explode(" ", $line);
-    if ($general=="BEGIN_GENERAL") continue;
-    if ($general=="END_GENERAL") continue;
-    $rank++;
-
-    $section = "General";
-
-    switch ($general) {
-    case 'TotalVisits':
-
-        $inserter = sprintf($itemplate, $journal_id, $year, $month, $section, $rank, $general, $count, '', '');
-
-        print($inserter);
-        echo "\n\n";
-
-        $result = mysql_query($inserter);
-        print(mysql_error());
-    }
-
-} while ($line != 'END_GENERAL');
-
 
 function processSection($f,$thePos,$beginSTR,$endSTR,$section) {
+    global $summarytablename;
     global $itemplate;
     global $journal_id;
     global $year;
     global $month;
     fseek($f, $thePos);
     $rank = 0;
+
+    // first remove that journal's existing section data for the month
+    $deleter = sprintf("delete from %s where journal_id=%d and year=%d and month=%d and section='%s';",
+                            $summarytablename, $journal_id, $year, $month, $section);
+
+    print($deleter);
+    echo "\n\n";
+
+    $result = mysql_query($deleter);
+    print(mysql_error());
 
     do {
         $line = trim(fgets($f));
@@ -92,13 +76,13 @@ function processSection($f,$thePos,$beginSTR,$endSTR,$section) {
 }
 
 
+processSection($f,$generalPos,"BEGIN_GENERAL","END_GENERAL","General");
 processSection($f,$domainPos,"BEGIN_DOMAIN","END_DOMAIN","Domain");
 processSection($f,$serefPos,"BEGIN_SEREFERRALS","END_SEREFERRALS","Search Engines");
 processSection($f,$pagePos,"BEGIN_SIDER","END_SIDER","Pages");
 processSection($f,$pagerefPos,"BEGIN_PAGEREFS","END_PAGEREFS","Page Refs");
 processSection($f,$dayPos,"BEGIN_DAY","END_DAY","Days of the Month");
-processSection($f,$cityPos,"BEGIN_PLUGIN_geoip_city_maxmind","END_PLUGIN_geoip_city_maxmind","GeoIP Cities");
-
+//processSection($f,$cityPos,"BEGIN_PLUGIN_geoip_city_maxmind","END_PLUGIN_geoip_city_maxmind","GeoIP Cities");
 
 ?>
 
