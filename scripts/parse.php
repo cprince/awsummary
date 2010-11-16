@@ -64,7 +64,9 @@ function processSection($f,$thePos,$beginSTR,$endSTR,$section) {
         if ($value1 == $endSTR) continue;
         $rank++;
 
-        $inserter = sprintf($itemplate, $journal_id, $year, $month, $section, $rank, $value1, $value2, $value3, $value4);
+        $inserter = sprintf($itemplate, $journal_id, $year, $month, $section, $rank,
+            mysql_real_escape_string($value1), mysql_real_escape_string($value2),
+            mysql_real_escape_string($value3), mysql_real_escape_string($value4));
 
         print($inserter);
         echo "\n\n";
