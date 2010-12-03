@@ -373,7 +373,7 @@ class awSummaryHandler extends Handler {
 	function validate($canRedirect = true) {
 		parent::validate();
 		$journal =& Request::getJournal();
-		if (!Validation::isJournalManager()) {
+		if (!(Validation::isJournalManager() || Validation::isSiteAdmin())) {
 			if ($canRedirect) Validation::redirectLogin();
 			else exit;
 		}
