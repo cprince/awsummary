@@ -8,7 +8,7 @@
 }
 .awtable {
   border-collapse: collapse;
-  width: 380px;
+  width: 410px;
   margin-top: 1em;
   margin-bottom: 1em;
 }
@@ -20,5 +20,6 @@
 }
 .awtable td {
   background-color: #f4f4f4;
+  border-bottom: 1px solid #ccc;
   padding: 4px;
 }

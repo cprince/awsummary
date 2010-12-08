@@ -107,6 +107,13 @@
 {/foreach}
 </table>
 
+<table class="awtable" summary="Article Pages">
+<tr><th>Popular Article Pages</th><th align="right">Count</th></tr>
+{foreach from=$toparticles item=inc key=ikey}
+    <tr><td><a target="_blank" href="{$ikey}">{$toparticlesnames[$ikey]}</a></td><td align="right">{$inc}</td></tr>
+{/foreach}
+</table>
+
 </div>
 
 <table id="incoming" class="awtable" summary="Incoming Links">

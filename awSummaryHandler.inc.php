@@ -61,12 +61,17 @@ class awSummaryHandler extends Handler {
 		$incomingsearch = $awSummaryDao->getSectionValues('Search Engines', $year, $month);
 		$totalincomingsearch = array_sum($incomingsearch);
 		$topincoming = $awSummaryDao->getSectionValues('Page Refs', $year, $month, 10);
-		$toppages = $awSummaryDao->getSectionValues('Pages', $year, $month, 10);
+		$toppages = $awSummaryDao->getSectionValues('Pages', $year, $month, 20);
+		$toparticles = $awSummaryDao->getSectionValues('Pages', $year, $month, 35);
 		$dpages = $awSummaryDao->getSectionValues('Domain', $year, $month);
 		$cities = $awSummaryDao->getSectionValues('GeoIP Cities', $year, $month);
 		
 		foreach ($dpages as $k => $dp) $dpages[$k] = round($dp/$totalpages*100, 1);
 		foreach ($incomingsearch as $k => $se) $incomingsearch[$k] = round($se/$totalincomingsearch*100, 1);
+
+		$toppages = $this->_filterArticles($toppages, TRUE);
+		$toparticles = $this->_filterArticles($toparticles, FALSE);
+		$toparticlesnames = $this->_articleNames($toparticles);
 
 		$templateManager->assign('totalpages', $totalpages);
 		$templateManager->assign('sections', $sections);
@@ -76,10 +81,51 @@ class awSummaryHandler extends Handler {
 		$templateManager->assign('incomingsearch', $incomingsearch);
 		$templateManager->assign('topincoming', $topincoming);
 		$templateManager->assign('toppages', $toppages);
+		$templateManager->assign('toparticles', $toparticles);
+		$templateManager->assign('toparticlesnames', $toparticlesnames);
 		$templateManager->assign_by_ref('domains', $this->domains);
 		$templateManager->assign_by_ref('metrics', $this->metrics);
 
 		$templateManager->display($plugin->getTemplatePath() . 'index.tpl');
+	}
+
+	/**
+	 * Internal method
+	 */
+	function _articleNames($apages) {
+		$ret = array();
+		$articleDao =& DAORegistry::getDAO('ArticleDAO');
+		foreach ($apages as $k => $ap) {
+			$re = '|article/\w+/(?P<aid>\d+)|';
+			preg_match($re, $k, $matches);
+
+			$article =& $articleDao->getArticle($matches['aid']);
+			if ($article)
+				$title = $article->getArticleTitle();
+			else
+				$title = '';
+			$ret[$k] = $title;
+		}
+		return $ret;
+	}
+
+	/**
+	 * Internal method
+	 */
+	function _filterArticles($apages, $excludeArticles=FALSE) {
+		$ret = array();
+		foreach ($apages as $k => $ap) {
+			if ((
+				strpos($k,'article/viewArticle/')
+				|| strpos($k,'article/viewPDF')
+				|| strpos($k,'article/viewFile')
+				|| strpos($k,'article/download')
+				|| strpos($k,'article/view/')
+				) !== $excludeArticles) {
+					$ret[$k] = $apages[$k];
+			}
+		}
+		return $ret;
 	}
 
 	/**
