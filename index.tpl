@@ -18,7 +18,7 @@
 {literal}
 <script type="text/javascript" charset="utf-8">
     window.onload = function () {
-        var r = Raphael("domainholder");
+        var r = Raphael("geographic");
         r.g.txtattr.font = "13px 'Fontin Sans', Fontin-Sans, sans-serif";
         r.g.text(120, 20, "Geographic Areas").attr({"font-size": 18});
         r.g.piechart(120, 136, 92, [
@@ -31,7 +31,7 @@
 {literal}
         ]});
 
-        var r = Raphael("seholder");
+        var r = Raphael("searchengines");
         r.g.txtattr.font = "13px 'Fontin Sans', Fontin-Sans, sans-serif";
         r.g.text(120, 20, "Incoming Searches").attr({"font-size": 18});
         r.g.piechart(120, 136, 92, [
@@ -52,27 +52,27 @@
       switch(dest) {
       case 'awindex':
         document.getElementById('awindex').style.display='block';
-        document.getElementById('seholder').style.display='none';
-        document.getElementById('domainholder').style.display='none';
-        document.getElementById('incoming').style.display='none';
+        document.getElementById('searchengines').style.display='none';
+        document.getElementById('geographic').style.display='none';
+        document.getElementById('incominglinks').style.display='none';
         break;
       case 'searchengines':
         document.getElementById('awindex').style.display='none';
-        document.getElementById('seholder').style.display='block';
-        document.getElementById('domainholder').style.display='none';
-        document.getElementById('incoming').style.display='none';
+        document.getElementById('searchengines').style.display='block';
+        document.getElementById('geographic').style.display='none';
+        document.getElementById('incominglinks').style.display='none';
         break;
       case 'geographic':
         document.getElementById('awindex').style.display='none';
-        document.getElementById('seholder').style.display='none';
-        document.getElementById('domainholder').style.display='block';
-        document.getElementById('incoming').style.display='none';
+        document.getElementById('searchengines').style.display='none';
+        document.getElementById('geographic').style.display='block';
+        document.getElementById('incominglinks').style.display='none';
         break;
-      case 'incoming':
+      case 'incominglinks':
         document.getElementById('awindex').style.display='none';
-        document.getElementById('seholder').style.display='none';
-        document.getElementById('domainholder').style.display='none';
-        document.getElementById('incoming').style.display='block';
+        document.getElementById('searchengines').style.display='none';
+        document.getElementById('geographic').style.display='none';
+        document.getElementById('incominglinks').style.display='block';
         break;
       default:
         //code to be executed
@@ -84,9 +84,11 @@
 <button onclick="awswitch('awindex')">Index</button>
 <button onclick="awswitch('searchengines')">Incoming Searches</button>
 <button onclick="awswitch('geographic')">Geographic</button>
-<button onclick="awswitch('incoming')">Incoming Links</button>
+<button onclick="awswitch('incominglinks')">Incoming Links</button>
 
 <p><strong>Date of statistics:</strong> {$datedisplay}</p>
+
+
 
 <div id="awindex">
 
@@ -116,15 +118,30 @@
 
 </div>
 
-<table id="incoming" class="awtable" summary="Incoming Links">
+
+
+<div id="incominglinks">
+
+<table class="awtable" summary="Incoming Links">
 <tr><th>Incoming Links</th><th align="right">Count</th></tr>
 {foreach from=$topincoming item=inc key=ikey}
     <tr><td><a target="_blank" href="{$ikey}">{$ikey}</a></td><td align="right">{$inc}</td></tr>
 {/foreach}
 </table>
 
-<div id="domainholder" class="awchart"></div>
+</div>
 
-<div id="seholder" class="awchart"></div>
+
+
+<div id="geographic" class="awchart">
+</div>
+
+
+
+<div id="searchenginesholder">
+<div id="searchengines" class="awchart">
+</div>
+</div>
+
 
 {include file="common/footer.tpl"}
