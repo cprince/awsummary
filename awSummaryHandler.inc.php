@@ -71,8 +71,8 @@ class awSummaryHandler extends Handler {
 		foreach ($incomingsearch as $k => $se) $incomingsearch[$k] = round($se/$totalincomingsearch*100, 1);
 
 		foreach ($searchwords as $k => $sw) {
-			$searchwords[urldecode($k)] = $sw;
 			unset($searchwords[$k]);
+			$searchwords[urldecode($k)] = $sw;
 		}
 
 		$toppages = $this->_filterArticles($toppages, TRUE);
