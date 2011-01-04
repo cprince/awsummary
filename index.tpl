@@ -52,25 +52,25 @@
       switch(dest) {
       case 'awindex':
         document.getElementById('awindex').style.display='block';
-        document.getElementById('searchengines').style.display='none';
+        document.getElementById('searchenginesholder').style.display='none';
         document.getElementById('geographic').style.display='none';
         document.getElementById('incominglinks').style.display='none';
         break;
-      case 'searchengines':
+      case 'searchenginesholder':
         document.getElementById('awindex').style.display='none';
-        document.getElementById('searchengines').style.display='block';
+        document.getElementById('searchenginesholder').style.display='block';
         document.getElementById('geographic').style.display='none';
         document.getElementById('incominglinks').style.display='none';
         break;
       case 'geographic':
         document.getElementById('awindex').style.display='none';
-        document.getElementById('searchengines').style.display='none';
+        document.getElementById('searchenginesholder').style.display='none';
         document.getElementById('geographic').style.display='block';
         document.getElementById('incominglinks').style.display='none';
         break;
       case 'incominglinks':
         document.getElementById('awindex').style.display='none';
-        document.getElementById('searchengines').style.display='none';
+        document.getElementById('searchenginesholder').style.display='none';
         document.getElementById('geographic').style.display='none';
         document.getElementById('incominglinks').style.display='block';
         break;
@@ -82,7 +82,7 @@
 {/literal}
 
 <button onclick="awswitch('awindex')">Index</button>
-<button onclick="awswitch('searchengines')">Incoming Searches</button>
+<button onclick="awswitch('searchenginesholder')">Incoming Searches</button>
 <button onclick="awswitch('geographic')">Geographic</button>
 <button onclick="awswitch('incominglinks')">Incoming Links</button>
 
@@ -141,6 +141,13 @@
 <div id="searchenginesholder">
 <div id="searchengines" class="awchart">
 </div>
+
+<table class="awtable" summary="Search Keywords">
+<tr><th>Search Keywords</th><th align="right">Count</th></tr>
+{foreach from=$searchwords item=inc key=ikey}
+    <tr><td>{$ikey}</td><td align="right">{$inc}</td></tr>
+{/foreach}
+</table>
 </div>
 
 

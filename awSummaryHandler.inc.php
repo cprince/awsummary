@@ -64,10 +64,16 @@ class awSummaryHandler extends Handler {
 		$toppages = $awSummaryDao->getSectionValues('Pages', $year, $month, 20);
 		$toparticles = $awSummaryDao->getSectionValues('Pages', $year, $month, 35);
 		$dpages = $awSummaryDao->getSectionValues('Domain', $year, $month);
-		$cities = $awSummaryDao->getSectionValues('GeoIP Cities', $year, $month);
+		$cities = $awSummaryDao->getSectionValues('GeoIP Cities', $year, $month, 20);
+		$searchwords = $awSummaryDao->getSectionValues('Search Keywords', $year, $month, 10);
 		
 		foreach ($dpages as $k => $dp) $dpages[$k] = round($dp/$totalpages*100, 1);
 		foreach ($incomingsearch as $k => $se) $incomingsearch[$k] = round($se/$totalincomingsearch*100, 1);
+
+		foreach ($searchwords as $k => $sw) {
+			$searchwords[urldecode($k)] = $sw;
+			unset($searchwords[$k]);
+		}
 
 		$toppages = $this->_filterArticles($toppages, TRUE);
 		$toparticles = $this->_filterArticles($toparticles, FALSE);
@@ -77,6 +83,7 @@ class awSummaryHandler extends Handler {
 		$templateManager->assign('sections', $sections);
 		$templateManager->assign('dpages', $dpages);
 		$templateManager->assign('cities', $cities);
+		$templateManager->assign('searchwords', $searchwords);
 		$templateManager->assign('general', $general);
 		$templateManager->assign('incomingsearch', $incomingsearch);
 		$templateManager->assign('topincoming', $topincoming);
