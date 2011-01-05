@@ -1,3 +1,22 @@
+.awnav button {
+  margin-bottom: 0.4em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  border: #999 1px solid;
+  border-bottom: none;
+  color: #333;
+  background-color: #eee;
+  font-size: 0.9em;
+  text-transform: uppercase;
+  cursor: pointer;
+  overflow: visible;
+  border-radius: 0px;
+  border-radius-topright: 6px;
+  border-radius-topleft: 6px;
+  -moz-border-radius: 0px;
+  -moz-border-radius-topright: 6px;
+  -moz-border-radius-topleft: 6px;
+}
 .awchart {
   background-color: #fff;
   border: 1px solid #ccc;

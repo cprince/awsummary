@@ -81,10 +81,12 @@
 </script>
 {/literal}
 
+<div class="awnav">
 <button onclick="awswitch('awindex')">Index</button>
 <button onclick="awswitch('searchenginesholder')">Incoming Searches</button>
 <button onclick="awswitch('geographicholder')">Geographic</button>
 <button onclick="awswitch('incominglinks')">Incoming Links</button>
+</div>
 
 <p><strong>Date of statistics:</strong> {$datedisplay}</p>
 
