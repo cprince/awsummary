@@ -64,7 +64,7 @@ class awSummaryHandler extends Handler {
 		$toppages = $awSummaryDao->getSectionValues('Pages', $year, $month, 20);
 		$toparticles = $awSummaryDao->getSectionValues('Pages', $year, $month, 35);
 		$dpages = $awSummaryDao->getSectionValues('Domain', $year, $month);
-		$cities = $awSummaryDao->getSectionValues('GeoIP Cities', $year, $month, 20);
+		$cities = $awSummaryDao->getSectionValues('GeoIP Cities', $year, $month, 10);
 		$searchwords = $awSummaryDao->getSectionValues('Search Keywords', $year, $month, 10);
 		
 		foreach ($dpages as $k => $dp) $dpages[$k] = round($dp/$totalpages*100, 1);
@@ -73,6 +73,14 @@ class awSummaryHandler extends Handler {
 		foreach ($searchwords as $k => $sw) {
 			unset($searchwords[$k]);
 			$searchwords[urldecode($k)] = $sw;
+		}
+
+		foreach ($cities as $k => $it) {
+			unset($cities[$k]);
+			$inter = urldecode($k);
+			@list($country, $city, $region) = explode("_", $inter);
+			$full = sprintf("%s %s %s", ucwords($city), strtoupper($region), $this->domains[$country]);
+			$cities[$full] = $it;
 		}
 
 		$toppages = $this->_filterArticles($toppages, TRUE);

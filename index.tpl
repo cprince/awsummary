@@ -53,25 +53,25 @@
       case 'awindex':
         document.getElementById('awindex').style.display='block';
         document.getElementById('searchenginesholder').style.display='none';
-        document.getElementById('geographic').style.display='none';
+        document.getElementById('geographicholder').style.display='none';
         document.getElementById('incominglinks').style.display='none';
         break;
       case 'searchenginesholder':
         document.getElementById('awindex').style.display='none';
         document.getElementById('searchenginesholder').style.display='block';
-        document.getElementById('geographic').style.display='none';
+        document.getElementById('geographicholder').style.display='none';
         document.getElementById('incominglinks').style.display='none';
         break;
-      case 'geographic':
+      case 'geographicholder':
         document.getElementById('awindex').style.display='none';
         document.getElementById('searchenginesholder').style.display='none';
-        document.getElementById('geographic').style.display='block';
+        document.getElementById('geographicholder').style.display='block';
         document.getElementById('incominglinks').style.display='none';
         break;
       case 'incominglinks':
         document.getElementById('awindex').style.display='none';
         document.getElementById('searchenginesholder').style.display='none';
-        document.getElementById('geographic').style.display='none';
+        document.getElementById('geographicholder').style.display='none';
         document.getElementById('incominglinks').style.display='block';
         break;
       default:
@@ -83,7 +83,7 @@
 
 <button onclick="awswitch('awindex')">Index</button>
 <button onclick="awswitch('searchenginesholder')">Incoming Searches</button>
-<button onclick="awswitch('geographic')">Geographic</button>
+<button onclick="awswitch('geographicholder')">Geographic</button>
 <button onclick="awswitch('incominglinks')">Incoming Links</button>
 
 <p><strong>Date of statistics:</strong> {$datedisplay}</p>
@@ -133,7 +133,17 @@
 
 
 
+<div id="geographicholder">
 <div id="geographic" class="awchart">
+</div>
+
+<table class="awtable" summary="Cities">
+<tr><th>Top Cities</th></tr>
+{foreach from=$cities item=inc key=ikey}
+    <tr><td>{$ikey}</td></tr>
+{/foreach}
+</table>
+
 </div>
 
 
@@ -148,7 +158,9 @@
     <tr><td>{$ikey}</td><td align="right">{$inc}</td></tr>
 {/foreach}
 </table>
+
 </div>
+
 
 
 {include file="common/footer.tpl"}
