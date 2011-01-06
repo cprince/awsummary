@@ -61,8 +61,8 @@ class awSummaryHandler extends Handler {
 		$incomingsearch = $awSummaryDao->getSectionValues('Search Engines', $year, $month);
 		$totalincomingsearch = array_sum($incomingsearch);
 		$topincoming = $awSummaryDao->getSectionValues('Page Refs', $year, $month, 10);
-		$toppages = $awSummaryDao->getSectionValues('Pages', $year, $month, 20);
-		$toparticles = $awSummaryDao->getSectionValues('Pages', $year, $month, 35);
+		$toppages = $awSummaryDao->getSectionValues('Pages', $year, $month, 25);
+		$toparticles = $awSummaryDao->getSectionValues('Pages', $year, $month, 30);
 		$dpages = $awSummaryDao->getSectionValues('Domain', $year, $month);
 		$cities = $awSummaryDao->getSectionValues('GeoIP Cities', $year, $month, 10);
 		$searchwords = $awSummaryDao->getSectionValues('Search Keywords', $year, $month, 10);
