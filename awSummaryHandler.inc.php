@@ -20,6 +20,7 @@ class awSummaryHandler extends Handler {
 	var $domains;
 	var $metrics = array(
 		'TotalVisits' => 'Total Visits',
+		'TotalUnique' => 'Total Unique Visitors',
 		);
 
 	/**

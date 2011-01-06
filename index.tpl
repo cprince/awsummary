@@ -94,13 +94,11 @@
 
 <div id="awindex">
 
-<table style="width: 120px">
 {foreach from=$general item=gen key=section}
   {if array_key_exists($section, $metrics)}
-    <tr><th>{$metrics[$section]}</th><td align="right">{$gen}</td></tr>
+    <p><strong>{$metrics[$section]}:</strong> {$gen}</p>
   {/if}
 {/foreach}
-</table>
 
 <p><strong>Total pages viewed:</strong> {$totalpages}</p>
 
