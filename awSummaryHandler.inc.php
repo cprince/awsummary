@@ -81,7 +81,7 @@ class awSummaryHandler extends Handler {
 		$toparticles = $awSummaryDao->getSectionValues('Pages', $year, $month, 30);
 		$origin = $awSummaryDao->getSectionValues('Origin', $year, $month);
 		$dpages = $awSummaryDao->getSectionValues('Domain', $year, $month);
-		$cities = $awSummaryDao->getSectionValues('GeoIP Cities', $year, $month, 10);
+		$cities = $awSummaryDao->getSectionValues('GeoIP Cities', $year, $month, 11);
 		$searchwords = $awSummaryDao->getSectionValues('Search Keywords', $year, $month, 10);
 
 		// exclude internal links from origin calculations
@@ -96,11 +96,14 @@ class awSummaryHandler extends Handler {
 			$searchwords[urldecode($k)] = $sw;
 		}
 
+		if (array_key_exists('unknown',$cities)) unset($cities['unknown']);
 		foreach ($cities as $k => $it) {
 			unset($cities[$k]);
 			$inter = urldecode($k);
 			@list($country, $city, $region) = explode("_", $inter);
-			$full = sprintf("%s %s %s", ucwords($city), strtoupper($region), $this->domains[$country]);
+			if (is_numeric($region[1]) || is_numeric($region[1])) $region = '';
+			else $region = strtoupper($region).', ';
+			$full = sprintf("%s, %s%s", ucwords($city), $region, $this->domains[$country]);
 			$cities[$full] = $it;
 		}
 
