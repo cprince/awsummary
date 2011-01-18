@@ -29,6 +29,7 @@ do {
     list($sectionName, $sectionPos) = explode(" ", $line);
     if ($sectionName == 'POS_GENERAL') $generalPos = $sectionPos;
     if ($sectionName == 'POS_DOMAIN') $domainPos = $sectionPos;
+    if ($sectionName == 'POS_ORIGIN') $originPos = $sectionPos;
     if ($sectionName == 'POS_SEREFERRALS') $serefPos = $sectionPos;
     if ($sectionName == 'POS_SIDER') $pagePos = $sectionPos;
     if ($sectionName == 'POS_PAGEREFS') $pagerefPos = $sectionPos;
@@ -81,6 +82,7 @@ function processSection($f,$thePos,$beginSTR,$endSTR,$section) {
 
 processSection($f,$generalPos,"BEGIN_GENERAL","END_GENERAL","General");
 processSection($f,$domainPos,"BEGIN_DOMAIN","END_DOMAIN","Domain");
+processSection($f,$originPos,"BEGIN_ORIGIN","END_ORIGIN","Origin");
 processSection($f,$serefPos,"BEGIN_SEREFERRALS","END_SEREFERRALS","Search Engines");
 processSection($f,$pagePos,"BEGIN_SIDER","END_SIDER","Pages");
 processSection($f,$pagerefPos,"BEGIN_PAGEREFS","END_PAGEREFS","Page Refs");
