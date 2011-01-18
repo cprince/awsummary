@@ -22,6 +22,12 @@ class awSummaryHandler extends Handler {
 		'TotalVisits' => 'Total Visits',
 		'TotalUnique' => 'Total Unique Visitors',
 		);
+	var $originLabels = array(
+		'From0' => 'Bookmark or Direct',
+		'From1' => 'Unknown',
+		'From2' => 'Search Engines',
+		'From3' => 'Incoming Links',
+		);
 
 	/**
 	 * Constructor
@@ -46,6 +52,8 @@ class awSummaryHandler extends Handler {
 		$templateManager->append('stylesheets', "$fullpath/awsummary.css");
 		$templateManager->assign('fullpath', $fullpath);
 
+
+		// determine and format dates
 		$sourceperiod = strtotime("last month");
 
 		$year = date('Y', $sourceperiod);
@@ -54,6 +62,13 @@ class awSummaryHandler extends Handler {
 		$datedisplay = date("F Y", $sourceperiod);
 
 		$templateManager->assign('datedisplay', $datedisplay);
+
+		// format the visits
+		$visitsHistory = $awSummaryDao->getVisitsHistory();
+		foreach ($visitsHistory as $k => $v) {
+			unset($visitsHistory[$k]);
+			$visitsHistory[str_replace(' ','\n',$k)] = $v;
+		}
 
 		$daysmonth = $awSummaryDao->getSectionValues('Days of the Month', $year, $month);
 		$totalpages = array_sum($daysmonth);
@@ -64,12 +79,17 @@ class awSummaryHandler extends Handler {
 		$topincoming = $awSummaryDao->getSectionValues('Page Refs', $year, $month, 10);
 		$toppages = $awSummaryDao->getSectionValues('Pages', $year, $month, 25);
 		$toparticles = $awSummaryDao->getSectionValues('Pages', $year, $month, 30);
+		$origin = $awSummaryDao->getSectionValues('Origin', $year, $month);
 		$dpages = $awSummaryDao->getSectionValues('Domain', $year, $month);
 		$cities = $awSummaryDao->getSectionValues('GeoIP Cities', $year, $month, 10);
 		$searchwords = $awSummaryDao->getSectionValues('Search Keywords', $year, $month, 10);
-		
+
+		// exclude internal links from origin calculations
+		$totalorigin = array_sum($origin) - $origin['From4'];
+
 		foreach ($dpages as $k => $dp) $dpages[$k] = round($dp/$totalpages*100, 1);
 		foreach ($incomingsearch as $k => $se) $incomingsearch[$k] = round($se/$totalincomingsearch*100, 1);
+		foreach ($origin as $k => $og) $origin[$k] = round($og/$totalorigin*100, 1);
 
 		foreach ($searchwords as $k => $sw) {
 			unset($searchwords[$k]);
@@ -88,8 +108,10 @@ class awSummaryHandler extends Handler {
 		$toparticles = $this->_filterArticles($toparticles, FALSE);
 		$toparticlesnames = $this->_articleNames($toparticles);
 
+		$templateManager->assign('visitsHistory', $visitsHistory);
 		$templateManager->assign('totalpages', $totalpages);
 		$templateManager->assign('sections', $sections);
+		$templateManager->assign('origin', $origin);
 		$templateManager->assign('dpages', $dpages);
 		$templateManager->assign('cities', $cities);
 		$templateManager->assign('searchwords', $searchwords);
@@ -101,6 +123,7 @@ class awSummaryHandler extends Handler {
 		$templateManager->assign('toparticlesnames', $toparticlesnames);
 		$templateManager->assign_by_ref('domains', $this->domains);
 		$templateManager->assign_by_ref('metrics', $this->metrics);
+		$templateManager->assign_by_ref('originLabels', $this->originLabels);
 
 		$templateManager->display($plugin->getTemplatePath() . 'index.tpl');
 	}

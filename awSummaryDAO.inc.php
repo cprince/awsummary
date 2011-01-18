@@ -37,6 +37,55 @@ class awSummaryDAO extends DAO {
 	}
 
 	/**
+	 * Get visits history
+	 * @return array
+	 */
+	function getVisitsHistory() {
+		$currentJournal =& Request::getJournal();
+		$jid = $currentJournal->getId();
+
+		$result =& $this->retrieve(
+			'SELECT * FROM awstats_summary WHERE journal_id=? AND section=? and value1=?',
+			array($jid, 'General', 'TotalVisits')
+		);
+		$data = array();
+		while (!$result->EOF) {
+			$row = $result->GetRowAssoc(false);
+			$data[$row['year'].$row['month']] = $row['value2'];
+			$result->MoveNext();
+		}
+		$result->Close();
+
+		// reformat the date key
+		foreach ($data as $key => $value) {
+			unset($data[$key]);
+			$newdate = date('M Y', strtotime($key . '01'));
+			$data[$newdate] = $value;
+		}
+
+		// make sure array is always 12 elements
+		$datalen = count($data);
+		if ($datalen > 12) {
+			$datakeys = array_keys($data);
+			array_splice($data, 0, $datalen-12);
+			array_splice($datakeys, 0, $datalen-12);
+			$data = array_reverse($data);
+			$datakeys = array_reverse($datakeys);
+
+			foreach ($data as $value)
+				$ret[array_pop($datakeys)] = array_pop($data);
+		}
+		if ($datalen < 12) {
+			$limit = 12 - $datalen;
+			for ($i = 0; $i<$limit; $i++)
+				$ret["nd$i"] = 0;
+			foreach ($data as $key => $value)
+				$ret[$key] = $value;
+		}
+		return $ret;
+	}
+
+	/**
 	 * Get values for a section
 	 * @return array
 	 */

@@ -1,5 +1,10 @@
+.awlist {
+  padding-left: 0;
+  margin-left: 0;
+}
 .awnav button {
   margin-bottom: 0.4em;
+  padding: 0.4em;
   padding-top: 0.2em;
   padding-bottom: 0.2em;
   border: #999 1px solid;
@@ -16,20 +21,23 @@
   -moz-border-radius: 0px;
   -moz-border-radius-topright: 6px;
   -moz-border-radius-topleft: 6px;
+  -webkit-border-radius: 0px;
+  -webkit-border-top-right-radius: 6px;
+  -webkit-border-top-left-radius: 6px;
 }
 .awchart {
   background-color: #fff;
   border: 1px solid #ccc;
   margin-top: 1em;
   margin-bottom: 1em;
-  width: 404px;
+  width: 420px;
   height: 250px;
 }
 .awtable {
   border-collapse: collapse;
-  width: 404px;
+  width: 420px;
   margin-top: 1em;
-  margin-bottom: 1em;
+  margin-bottom: 1.5em;
 }
 .awtable th {
   background-color: #ddd;
