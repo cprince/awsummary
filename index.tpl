@@ -33,7 +33,7 @@
 {/literal}
 {assign var="perpos" value="56"}
 {foreach from=$visitsHistory item=visit key=period}
-  {assign var="perout" value=str_replace(' ','\n',$period)}
+  {assign var="perout" value=$period}
   {if substr($period,0,2) eq 'nd'}
     {assign var="perout" value='nd\n-'}
   {/if}
