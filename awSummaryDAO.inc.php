@@ -45,23 +45,18 @@ class awSummaryDAO extends DAO {
 		$jid = $currentJournal->getId();
 
 		$result =& $this->retrieve(
-			'SELECT * FROM awstats_summary WHERE journal_id=? AND section=? and value1=?',
+			'SELECT * FROM awstats_summary WHERE journal_id=? AND section=? and value1=? ORDER BY year, month',
 			array($jid, 'General', 'TotalVisits')
 		);
 		$data = array();
 		while (!$result->EOF) {
 			$row = $result->GetRowAssoc(false);
-			$data[$row['year'].$row['month']] = $row['value2'];
+			$dk = sprintf('%d%02d', $row['year'], $row['month']);
+			$dk = date('M Y', strtotime($dk . '01'));
+			$data[$dk] = $row['value2'];
 			$result->MoveNext();
 		}
 		$result->Close();
-
-		// reformat the date key
-		foreach ($data as $key => $value) {
-			unset($data[$key]);
-			$newdate = date('M Y', strtotime($key . '01'));
-			$data[$newdate] = $value;
-		}
 
 		// make sure array is always 12 elements
 		$datalen = count($data);
