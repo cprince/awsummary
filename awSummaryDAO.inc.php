@@ -60,6 +60,9 @@ class awSummaryDAO extends DAO {
 
 		// make sure array is always 12 elements
 		$datalen = count($data);
+		if ($datalen == 12) {
+			$ret = $data;
+		}
 		if ($datalen > 12) {
 			$datakeys = array_keys($data);
 			array_splice($data, 0, $datalen-12);
