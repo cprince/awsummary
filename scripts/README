@@ -1,0 +1,4 @@
+Do not store the scripts directory in a web accessible place. Instead move it to an area from which you normally run utilites, like /usr/local
+
+To be clear, move and delete the scripts directory before adding this to your OJS installation.
+
