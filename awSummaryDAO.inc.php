@@ -51,8 +51,8 @@ class awSummaryDAO extends DAO {
 		$data = array();
 		while (!$result->EOF) {
 			$row = $result->GetRowAssoc(false);
-			$dk = sprintf('%d%02d', $row['year'], $row['month']);
-			$dk = date('M Y', strtotime($dk . '01'));
+			$dk = sprintf('%d%02d01', $row['year'], $row['month']);
+			$dk = date('M Y', strtotime($dk));
 			$data[$dk] = $row['value2'];
 			$result->MoveNext();
 		}
