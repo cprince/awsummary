@@ -54,7 +54,17 @@ class awSummaryHandler extends Handler {
 
 
 		// determine and format dates
-		$sourceperiod = strtotime("last month");
+		$year = Request::getUserVar('year');
+		$month = Request::getUserVar('month');
+
+		if (!($year && $month)) {
+			$sourceperiod = strtotime("last month");
+		} else {
+			if ($month < 1) $month = 1; if ($month > 12) $month = 12;
+			if ($year < 1000) $year = 1000; if ($year > 3000) $year = 3000;
+
+			$sourceperiod = mktime(0,0,0,$month,1,$year);
+		}
 
 		$year = date('Y', $sourceperiod);
 		$month = date('n', $sourceperiod);
@@ -85,7 +95,8 @@ class awSummaryHandler extends Handler {
 		$searchwords = $awSummaryDao->getSectionValues('Search Keywords', $year, $month, 10);
 
 		// exclude internal links from origin calculations
-		$totalorigin = array_sum($origin) - $origin['From4'];
+		if (@$origin['From4'])
+			$totalorigin = array_sum($origin) - $origin['From4'];
 
 		foreach ($dpages as $k => $dp) $dpages[$k] = round($dp/$totalpages*100, 1);
 		foreach ($incomingsearch as $k => $se) $incomingsearch[$k] = round($se/$totalincomingsearch*100, 1);
