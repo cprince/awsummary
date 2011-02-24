@@ -1,11 +1,10 @@
 {**
  * index.tpl
  *
- * Copyright (c) 2003-2009 John Willinsky
+ * Copyright (c) 2003-2011 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * awSummary plugin index
- *
  *}
 {strip}
 {assign var="pageTitle" value="plugins.generic.awsummary"}
