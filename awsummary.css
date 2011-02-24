@@ -60,3 +60,19 @@
   border-bottom: 1px solid #ccc;
   padding: 4px;
 }
+.awtable td.dnldr {
+  background-color: transparent;
+  border-bottom: 0px solid #ccc;
+  padding: 4px;
+  text-transform: uppercase;
+}
+.awtable td.dnldr a {
+  font-size: 0.75em;
+  text-decoration: none;
+  border: #999 0 solid;
+  cursor: pointer;
+}
+.awtable td.dnldr a:after {
+  content: url("../../../templates/images/icons/letter.gif");
+  padding-left: 2px;
+}

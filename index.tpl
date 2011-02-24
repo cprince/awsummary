@@ -111,7 +111,7 @@
 <button onclick="awswitch('geographicholder')">Geographic</button>
 </div>
 
-<p><strong>Date of Statistics:</strong> {$datedisplay}</p>
+<p><strong>{translate key="plugins.generic.awsummary.dateofstatistics"}</strong> {$datedisplay}</p>
 
 
 
@@ -133,18 +133,20 @@
 
 <div id="pages">
 
-<table class="awtable" summary="Article Pages">
-<tr align="left"><th>Popular Article Pages</th><th align="right">Count</th></tr>
+<table class="awtable" summary="{translate key="plugins.generic.awsummary.toparticles"}">
+<tr align="left"><th>{translate key="plugins.generic.awsummary.toparticles"}</th><th align="right">Count</th></tr>
 {foreach from=$toparticles item=inc key=ikey}
     <tr><td><a target="_blank" href="{$ikey}">{$toparticlesnames[$ikey]}</a></td><td align="right">{$inc}</td></tr>
 {/foreach}
+<tr><td align="right" colspan="2" class="dnldr"><a href="{url op="download" report="toparticles"}">{translate key="plugins.generic.awsummary.downloadresults"}</a></td></tr>
 </table>
 
-<table class="awtable" summary="Popular Pages">
-<tr align="left"><th>Other Popular Pages</th><th align="right">Count</th></tr>
+<table class="awtable" summary="{translate key="plugins.generic.awsummary.toppages"}">
+<tr align="left"><th>{translate key="plugins.generic.awsummary.toppages"}</th><th align="right">Count</th></tr>
 {foreach from=$toppages item=inc key=ikey}
     <tr><td><a target="_blank" href="{$ikey}">{$ikey}</a></td><td align="right">{$inc}</td></tr>
 {/foreach}
+<tr><td align="right" colspan="2" class="dnldr"><a href="{url op="download" report="toppages"}">{translate key="plugins.generic.awsummary.downloadresults"}</a></td></tr>
 </table>
 
 </div>
@@ -155,11 +157,12 @@
 <div id="originchartholder" class="awchart">
 </div>
 
-<table class="awtable" summary="Incoming Links">
-<tr align="left"><th>Incoming Links</th><th align="right">Count</th></tr>
+<table class="awtable" summary="{translate key="plugins.generic.awsummary.topincoming"}">
+<tr align="left"><th>{translate key="plugins.generic.awsummary.topincoming"}</th><th align="right">Count</th></tr>
 {foreach from=$topincoming item=inc key=ikey}
     <tr><td><a target="_blank" href="{$ikey}">{$ikey}</a></td><td align="right">{$inc}</td></tr>
 {/foreach}
+<tr><td align="right" colspan="2" class="dnldr"><a href="{url op="download" report="topincoming"}">{translate key="plugins.generic.awsummary.downloadresults"}</a></td></tr>
 </table>
 
 </div>
@@ -170,11 +173,12 @@
 <div id="geographic" class="awchart">
 </div>
 
-<table class="awtable" summary="Cities">
-<tr align="left"><th>Top Cities</th></tr>
+<table class="awtable" summary="{translate key="plugins.generic.awsummary.cities"}">
+<tr align="left"><th>{translate key="plugins.generic.awsummary.cities"}</th></tr>
 {foreach from=$cities item=inc key=ikey}
     <tr><td>{$ikey}</td></tr>
 {/foreach}
+<tr><td align="right" colspan="2" class="dnldr"><a href="{url op="download" report="cities"}">{translate key="plugins.generic.awsummary.downloadresults"}</a></td></tr>
 </table>
 
 </div>
@@ -185,11 +189,12 @@
 <div id="searchengines" class="awchart">
 </div>
 
-<table class="awtable" summary="Search Keywords">
-<tr><th>Search Keywords</th><th align="right">Count</th></tr>
+<table class="awtable" summary="{translate key="plugins.generic.awsummary.searchwords"}">
+<tr><th>{translate key="plugins.generic.awsummary.searchwords"}</th><th align="right">Count</th></tr>
 {foreach from=$searchwords item=inc key=ikey}
     <tr><td>{$ikey}</td><td align="right">{$inc}</td></tr>
 {/foreach}
+<tr><td align="right" colspan="2" class="dnldr"><a href="{url op="download" report="searchwords"}">{translate key="plugins.generic.awsummary.downloadresults"}</a></td></tr>
 </table>
 
 </div>

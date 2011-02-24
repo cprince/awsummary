@@ -15,5 +15,11 @@
   <message key="plugins.generic.awsummary">AWStats Summary</message>
   <message key="plugins.generic.awsummary.enabled">The AWStats Summary Plugin has been enabled.</message>
   <message key="plugins.generic.awsummary.disabled">The AWStats Summary Plugin has been disabled.</message>
-  <message key="plugins.generic.awsummary.1a.title">Journal Report 1 (R2): Full-Text Article Requests by Month and Journal</message>
+  <message key="plugins.generic.awsummary.dateofstatistics">Date of Statistics:</message>
+  <message key="plugins.generic.awsummary.toparticles">Top Article Pages</message>
+  <message key="plugins.generic.awsummary.toppages">Other Popular Pages</message>
+  <message key="plugins.generic.awsummary.topincoming">Incoming Links</message>
+  <message key="plugins.generic.awsummary.cities">Top Cities</message>
+  <message key="plugins.generic.awsummary.searchwords">Search Keywords</message>
+  <message key="plugins.generic.awsummary.downloadresults">Download results</message>
 </locale>

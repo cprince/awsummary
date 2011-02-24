@@ -38,20 +38,14 @@ class awSummaryHandler extends Handler {
 	}
 	
 	/**
-	 * Display the summary page
+	 * Internal method
 	 */
-	function index() {
-		$this->validate();
-		$this->setupTemplate();
-		$plugin =& $this->plugin;
-
+	function _assignTemplates($templateManager) {
 		$fullpath = Request::getBaseUrl().'/'.$this->plugin->getPluginPath();
 
 		$awSummaryDao =& DAORegistry::getDAO('awSummaryDAO');
-		$templateManager =& TemplateManager::getManager();
 		$templateManager->append('stylesheets', "$fullpath/awsummary.css");
 		$templateManager->assign('fullpath', $fullpath);
-
 
 		// determine and format dates
 		$year = Request::getUserVar('year');
@@ -138,8 +132,41 @@ class awSummaryHandler extends Handler {
 		$templateManager->assign_by_ref('domains', $this->domains);
 		$templateManager->assign_by_ref('metrics', $this->metrics);
 		$templateManager->assign_by_ref('originLabels', $this->originLabels);
+	}
+	
+	/**
+	 * Display the summary page
+	 */
+	function index() {
+		$this->validate();
+		$this->setupTemplate();
+		$plugin =& $this->plugin;
+
+		$templateManager =& TemplateManager::getManager();
+		$this->_assignTemplates($templateManager);
 
 		$templateManager->display($plugin->getTemplatePath() . 'index.tpl');
+	}
+	
+	/**
+	 * Download
+	 */
+	function download() {
+		$this->validate();
+		$this->setupTemplate();
+		$plugin =& $this->plugin;
+
+		$templateManager =& TemplateManager::getManager();
+		$this->_assignTemplates($templateManager);
+
+		$report = Request::getUserVar('report');
+
+		$templateManager->assign('report', $report);
+		$templateManager->assign('separator', ',');
+
+		//$templateManager->display($plugin->getTemplatePath() . 'download.tpl', 'text/comma-separated-values');
+		header("Content-Disposition: inline; filename=\"report.csv\"");
+ 		$templateManager->display($plugin->getTemplatePath() . 'download.tpl', 'text/comma-separated-values');
 	}
 
 	/**
@@ -152,11 +179,12 @@ class awSummaryHandler extends Handler {
 			$re = '|article/\w+/(?P<aid>\d+)|';
 			preg_match($re, $k, $matches);
 
-			$article =& $articleDao->getArticle($matches['aid']);
-			if ($article)
-				$title = $article->getArticleTitle();
-			else
-				$title = '';
+			$title = '';
+			if (array_key_exists('aid',$matches)) {
+				$article =& $articleDao->getArticle($matches['aid']);
+				if ($article)
+					$title = $article->getArticleTitle();
+			}
 			$ret[$k] = $title;
 		}
 		return $ret;
@@ -472,7 +500,7 @@ class awSummaryHandler extends Handler {
 	function validate($canRedirect = true) {
 		parent::validate();
 		$journal =& Request::getJournal();
-		if (!(Validation::isJournalManager() || Validation::isSiteAdmin())) {
+		if (!(Validation::isJournalManager() || Validation::isSiteAdmin() || Validation::isEditor())) {
 			if ($canRedirect) Validation::redirectLogin();
 			else exit;
 		}
