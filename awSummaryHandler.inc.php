@@ -40,7 +40,7 @@ class awSummaryHandler extends Handler {
 	/**
 	 * Internal method
 	 */
-	function _assignTemplates($templateManager) {
+	function _assignTemplateVars($templateManager) {
 		$fullpath = Request::getBaseUrl().'/'.$this->plugin->getPluginPath();
 
 		$awSummaryDao =& DAORegistry::getDAO('awSummaryDAO');
@@ -143,7 +143,7 @@ class awSummaryHandler extends Handler {
 		$plugin =& $this->plugin;
 
 		$templateManager =& TemplateManager::getManager();
-		$this->_assignTemplates($templateManager);
+		$this->_assignTemplateVars($templateManager);
 
 		$templateManager->display($plugin->getTemplatePath() . 'index.tpl');
 	}
@@ -157,14 +157,13 @@ class awSummaryHandler extends Handler {
 		$plugin =& $this->plugin;
 
 		$templateManager =& TemplateManager::getManager();
-		$this->_assignTemplates($templateManager);
+		$this->_assignTemplateVars($templateManager);
 
 		$report = Request::getUserVar('report');
 
 		$templateManager->assign('report', $report);
 		$templateManager->assign('separator', ',');
 
-		//$templateManager->display($plugin->getTemplatePath() . 'download.tpl', 'text/comma-separated-values');
 		header("Content-Disposition: inline; filename=\"report.csv\"");
  		$templateManager->display($plugin->getTemplatePath() . 'download.tpl', 'text/comma-separated-values');
 	}
