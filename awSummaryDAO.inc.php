@@ -40,7 +40,7 @@ class awSummaryDAO extends DAO {
 	 * Get visits history
 	 * @return array
 	 */
-	function getVisitsHistory() {
+	function getVisitsHistory($maxMonths) {
 		$currentJournal =& Request::getJournal();
 		$jid = $currentJournal->getId();
 
@@ -58,23 +58,23 @@ class awSummaryDAO extends DAO {
 		}
 		$result->Close();
 
-		// make sure array is always 12 elements
+		// make sure array is always $maxMonths elements
 		$datalen = count($data);
-		if ($datalen == 12) {
+		if ($datalen == $maxMonths) {
 			$ret = $data;
 		}
-		if ($datalen > 12) {
+		if ($datalen > $maxMonths) {
 			$datakeys = array_keys($data);
-			array_splice($data, 0, $datalen-12);
-			array_splice($datakeys, 0, $datalen-12);
+			array_splice($data, 0, $datalen-$maxMonths);
+			array_splice($datakeys, 0, $datalen-$maxMonths);
 			$data = array_reverse($data);
 			$datakeys = array_reverse($datakeys);
 
 			foreach ($data as $value)
 				$ret[array_pop($datakeys)] = array_pop($data);
 		}
-		if ($datalen < 12) {
-			$limit = 12 - $datalen;
+		if ($datalen < $maxMonths) {
+			$limit = $maxMonths - $datalen;
 			for ($i = 0; $i<$limit; $i++)
 				$ret["nd$i"] = 0;
 			foreach ($data as $key => $value)

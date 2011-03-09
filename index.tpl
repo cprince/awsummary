@@ -21,28 +21,28 @@
         var r = Raphael("trendholder");
         r.g.txtattr.font = "13px 'Fontin Sans', Fontin-Sans, sans-serif";
 
-        r.g.text(200, 30, "Total Visits History").attr({"font-size": 18});
+        r.g.text(200, 22, "Total Visits History").attr({"font-size": 18});
 
-        var trendchart = r.g.barchart(40, 50, 370, 170, [[
+        var trendchart = r.g.barchart(26, 26, 398, 198, [[
 {/literal}
 {foreach from=$visitsHistory item=visit key=period}"{$visit}",{/foreach}null
 {literal}
         ]], 0, {type: "sharp"});
 
 {/literal}
-{assign var="perpos" value="56"}
+{assign var="perpos" value="42"}
 {foreach from=$visitsHistory item=visit key=period}
   {assign var="perout" value=$period}
   {if substr($period,0,2) eq 'nd'}
     {assign var="perout" value='nd\n-'}
   {/if}
-          var t = r.text( {$perpos}, 216, "{$perout}");
+          var t = r.text( {$perpos}, 220, "{$perout}");
   {assign var="perpos" value=$perpos+28}
 {/foreach}
 {literal}
 
         // make the last bar stand out
-        var bar = trendchart.bars[0][11];
+        var bar = trendchart.bars[0][12];
         bar.attr("fill", "#00aa00");
 
 

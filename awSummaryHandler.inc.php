@@ -98,7 +98,7 @@ class awSummaryHandler extends Handler {
 		$templateManager->assign('datedisplay', $datedisplay);
 
 		// format the visits
-		$visitsHistory = $awSummaryDao->getVisitsHistory();
+		$visitsHistory = $awSummaryDao->getVisitsHistory(13);
 		foreach ($visitsHistory as $k => $v) {
 			unset($visitsHistory[$k]);
 			$visitsHistory[str_replace(' ','\n',$k)] = $v;
