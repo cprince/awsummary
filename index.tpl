@@ -43,7 +43,7 @@
 
         // make the last bar stand out
         var bar = trendchart.bars[0][12];
-        bar.attr("fill", "#00aa00");
+        bar.attr("fill", "#8aa717");
 
 
 
