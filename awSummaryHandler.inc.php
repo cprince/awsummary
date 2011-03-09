@@ -233,7 +233,7 @@ class awSummaryHandler extends Handler {
 			if (array_key_exists('aid',$matches)) {
 				$article =& $articleDao->getArticle($matches['aid']);
 				if ($article)
-					$title = $article->getArticleTitle();
+					$title = trim($article->getArticleTitle());
 			}
 			$ret[$k] = $title;
 		}
