@@ -12,35 +12,35 @@
 {if $report eq 'toparticles'}
 {translate key="plugins.generic.awsummary.toparticles"}
 
-{foreach from=$toparticles item=inc key=ikey}
-"{$baseUrl}{$ikey}"{$separator}"{$toparticlesnames[$ikey]}"{$separator}{$inc}
+{foreach from=$toparticles_full item=inc key=ikey}
+"{$baseUrl}{$ikey}"{$separator}"{$toparticlesnames_full[$ikey]}"{$separator}{$inc}
 {/foreach}
 
 {elseif $report eq 'toppages'}
 {translate key="plugins.generic.awsummary.toppages"}
 
-{foreach from=$toppages item=inc key=ikey}
+{foreach from=$toppages_full item=inc key=ikey}
 "{$baseUrl}{$ikey}"{$separator}{$inc}
 {/foreach}
 
 {elseif $report eq 'topincoming'}
 {translate key="plugins.generic.awsummary.topincoming"}
 
-{foreach from=$topincoming item=inc key=ikey}
+{foreach from=$topincoming_full item=inc key=ikey}
 "{$ikey}"{$separator}{$inc}
 {/foreach}
 
 {elseif $report eq 'cities'}
 {translate key="plugins.generic.awsummary.cities"}
 
-{foreach from=$cities item=inc key=ikey}
+{foreach from=$cities_full item=inc key=ikey}
 "{$ikey}"{$separator}{$inc}
 {/foreach}
 
 {elseif $report eq 'searchwords'}
 {translate key="plugins.generic.awsummary.searchwords"}
 
-{foreach from=$searchwords item=inc key=ikey}
+{foreach from=$searchwords_full item=inc key=ikey}
 "{$ikey}"{$separator}{$inc}
 {/foreach}
 

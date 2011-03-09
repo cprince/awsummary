@@ -28,6 +28,8 @@ class awSummaryHandler extends Handler {
 		'From2' => 'Search Engines',
 		'From3' => 'Incoming Links',
 		);
+	var $sqlarticles = "( value1 LIKE '%article/viewArticle/%' OR value1 LIKE '%article/viewPDF%' OR value1 LIKE '%article/viewFile%' OR value1 LIKE '%article/download%' OR value1 LIKE '%article/view/%' )";
+
 
 	/**
 	 * Constructor
@@ -36,18 +38,30 @@ class awSummaryHandler extends Handler {
 		parent::Handler();
 		$this->domains = $this->_assignDomains();
 	}
-	
+
+
 	/**
 	 * Internal method
 	 */
-	function _assignTemplateVars($templateManager) {
-		$fullpath = Request::getBaseUrl().'/'.$this->plugin->getPluginPath();
+	function _massageCities(&$cities) {
+		$ret = array();
+		if (array_key_exists('unknown',$cities)) unset($cities['unknown']);
+		foreach ($cities as $k => $it) {
+			$inter = urldecode($k);
+			@list($country, $city, $region) = explode("_", $inter);
+			if (is_numeric($region[1]) || is_numeric($region[1])) $region = '';
+			else $region = strtoupper($region).', ';
+			$full = sprintf("%s, %s%s", ucwords($city), $region, $this->domains[$country]);
+			$ret[$full] = $it;
+		}
+		$cities = $ret;
+	}
 
-		$awSummaryDao =& DAORegistry::getDAO('awSummaryDAO');
-		$templateManager->append('stylesheets', "$fullpath/awsummary.css");
-		$templateManager->assign('fullpath', $fullpath);
 
-		// determine and format dates
+	/**
+	 * Internal method
+	 */
+	function _getSourceperiod(&$sourceperiod) {
 		$year = Request::getUserVar('year');
 		$month = Request::getUserVar('month');
 
@@ -59,6 +73,22 @@ class awSummaryHandler extends Handler {
 
 			$sourceperiod = mktime(0,0,0,$month,1,$year);
 		}
+	}
+
+
+	/**
+	 * Internal method
+	 */
+	function _assignTemplateVars($templateManager) {
+		$listLimit = 10;
+
+		$fullpath = Request::getBaseUrl().'/'.$this->plugin->getPluginPath();
+
+		$awSummaryDao =& DAORegistry::getDAO('awSummaryDAO');
+		$templateManager->append('stylesheets', "$fullpath/awsummary.css");
+		$templateManager->assign('fullpath', $fullpath);
+
+		$this->_getSourceperiod($sourceperiod);
 
 		$year = date('Y', $sourceperiod);
 		$month = date('n', $sourceperiod);
@@ -80,13 +110,13 @@ class awSummaryHandler extends Handler {
 		$general = $awSummaryDao->getSectionValues('General', $year, $month);
 		$incomingsearch = $awSummaryDao->getSectionValues('Search Engines', $year, $month);
 		$totalincomingsearch = array_sum($incomingsearch);
-		$topincoming = $awSummaryDao->getSectionValues('Page Refs', $year, $month, 10);
-		$toppages = $awSummaryDao->getSectionValues('Pages', $year, $month, 25);
-		$toparticles = $awSummaryDao->getSectionValues('Pages', $year, $month, 30);
+		$topincoming = $awSummaryDao->getSectionValues('Page Refs', $year, $month, $listLimit);
+		$toppages = $awSummaryDao->getSectionValues('Pages', $year, $month, $listLimit, "AND NOT $this->sqlarticles");
+		$toparticles = $awSummaryDao->getSectionValues('Pages', $year, $month, $listLimit, "AND $this->sqlarticles");
 		$origin = $awSummaryDao->getSectionValues('Origin', $year, $month);
 		$dpages = $awSummaryDao->getSectionValues('Domain', $year, $month);
-		$cities = $awSummaryDao->getSectionValues('GeoIP Cities', $year, $month, 11);
-		$searchwords = $awSummaryDao->getSectionValues('Search Keywords', $year, $month, 10);
+		$cities = $awSummaryDao->getSectionValues('GeoIP Cities', $year, $month, $listLimit+1);
+		$searchwords = $awSummaryDao->getSectionValues('Search Keywords', $year, $month, $listLimit);
 
 		// exclude internal links from origin calculations
 		if (@$origin['From4'])
@@ -101,19 +131,8 @@ class awSummaryHandler extends Handler {
 			$searchwords[urldecode($k)] = $sw;
 		}
 
-		if (array_key_exists('unknown',$cities)) unset($cities['unknown']);
-		foreach ($cities as $k => $it) {
-			unset($cities[$k]);
-			$inter = urldecode($k);
-			@list($country, $city, $region) = explode("_", $inter);
-			if (is_numeric($region[1]) || is_numeric($region[1])) $region = '';
-			else $region = strtoupper($region).', ';
-			$full = sprintf("%s, %s%s", ucwords($city), $region, $this->domains[$country]);
-			$cities[$full] = $it;
-		}
+		$this->_massageCities($cities);
 
-		$toppages = $this->_filterArticles($toppages, TRUE);
-		$toparticles = $this->_filterArticles($toparticles, FALSE);
 		$toparticlesnames = $this->_articleNames($toparticles);
 
 		$templateManager->assign('visitsHistory', $visitsHistory);
@@ -133,7 +152,8 @@ class awSummaryHandler extends Handler {
 		$templateManager->assign_by_ref('metrics', $this->metrics);
 		$templateManager->assign_by_ref('originLabels', $this->originLabels);
 	}
-	
+
+
 	/**
 	 * Display the summary page
 	 */
@@ -147,26 +167,57 @@ class awSummaryHandler extends Handler {
 
 		$templateManager->display($plugin->getTemplatePath() . 'index.tpl');
 	}
-	
+
+
 	/**
-	 * Download
+	 * Download as CSV
 	 */
 	function download() {
+		$downloadListLimit = 100;
+
 		$this->validate();
 		$this->setupTemplate();
 		$plugin =& $this->plugin;
 
+		$awSummaryDao =& DAORegistry::getDAO('awSummaryDAO');
 		$templateManager =& TemplateManager::getManager();
-		$this->_assignTemplateVars($templateManager);
 
 		$report = Request::getUserVar('report');
 
+		$this->_getSourceperiod($sourceperiod);
+
+		$year = date('Y', $sourceperiod);
+		$month = date('n', $sourceperiod);
+
+		$datedisplay = date("F Y", $sourceperiod);
+
+		$toppages_full = $awSummaryDao->getSectionValues('Pages', $year, $month, $downloadListLimit, "AND NOT $this->sqlarticles");
+		$toparticles_full = $awSummaryDao->getSectionValues('Pages', $year, $month, $downloadListLimit, "AND $this->sqlarticles");
+		$toparticlesnames_full = $this->_articleNames($toparticles_full);
+		$topincoming_full = $awSummaryDao->getSectionValues('Page Refs', $year, $month, $downloadListLimit);
+		$cities_full = $awSummaryDao->getSectionValues('GeoIP Cities', $year, $month, $downloadListLimit+1);
+		$searchwords_full = $awSummaryDao->getSectionValues('Search Keywords', $year, $month, $downloadListLimit);
+
+		$this->_massageCities($cities_full);
+
+		foreach ($searchwords_full as $k => $sw) {
+			unset($searchwords_full[$k]);
+			$searchwords_full[urldecode($k)] = $sw;
+		}
+
+		$templateManager->assign('toppages_full', $toppages_full);
+		$templateManager->assign('toparticles_full', $toparticles_full);
+		$templateManager->assign('toparticlesnames_full', $toparticlesnames_full);
+		$templateManager->assign('topincoming_full', $topincoming_full);
+		$templateManager->assign('cities_full', $cities_full);
+		$templateManager->assign('searchwords_full', $searchwords_full);
 		$templateManager->assign('report', $report);
 		$templateManager->assign('separator', ',');
 
 		header("Content-Disposition: inline; filename=\"report.csv\"");
  		$templateManager->display($plugin->getTemplatePath() . 'download.tpl', 'text/comma-separated-values');
 	}
+
 
 	/**
 	 * Internal method
@@ -189,8 +240,9 @@ class awSummaryHandler extends Handler {
 		return $ret;
 	}
 
+
 	/**
-	 * Internal method
+	 * Internal method - wait, is this no longer used?
 	 */
 	function _filterArticles($apages, $excludeArticles=FALSE) {
 		$ret = array();
@@ -207,6 +259,7 @@ class awSummaryHandler extends Handler {
 		}
 		return $ret;
 	}
+
 
 	/**
 	 * Internal method, domains from AWStats lib/domains.pm

@@ -87,20 +87,20 @@ class awSummaryDAO extends DAO {
 	 * Get values for a section
 	 * @return array
 	 */
-	function getSectionValues($section, $year, $month, $limit=-1) {
+	function getSectionValues($section, $year, $month, $limit=-1, $custom='') {
 		$currentJournal =& Request::getJournal();
 		$jid = $currentJournal->getId();
 
 		if ($limit==-1) {
 			$result =& $this->retrieve(
 				'SELECT value1, value2 FROM awstats_summary
-					WHERE journal_id=? AND section=? AND year=? AND month=? ORDER BY rank',
+					WHERE journal_id=? AND section=? AND year=? AND month=? ' . $custom . ' ORDER BY CAST(value2 as signed integer) desc',
 				array($jid, $section, $year, $month)
 			);
 		} else {
 			$result =& $this->retrieve(
 				'SELECT value1, value2 FROM awstats_summary
-					WHERE journal_id=? AND section=? AND year=? AND month=? ORDER BY rank LIMIT ?',
+					WHERE journal_id=? AND section=? AND year=? AND month=? ' . $custom . ' ORDER BY CAST(value2 as signed integer) desc LIMIT ?',
 				array($jid, $section, $year, $month, $limit)
 			);
 		}
