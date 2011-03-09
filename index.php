@@ -10,8 +10,6 @@
  *
  */
 
-// $Id: index.php,v 1.8 2009/04/08 19:54:40 asmecher Exp $
-
 
 require_once('awSummaryPlugin.inc.php');
 
