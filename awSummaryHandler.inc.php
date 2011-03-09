@@ -115,7 +115,7 @@ class awSummaryHandler extends Handler {
 		$toparticles = $awSummaryDao->getSectionValues('Pages', $year, $month, $listLimit, "AND $this->sqlarticles");
 		$origin = $awSummaryDao->getSectionValues('Origin', $year, $month);
 		$dpages = $awSummaryDao->getSectionValues('Domain', $year, $month);
-		$cities = $awSummaryDao->getSectionValues('GeoIP Cities', $year, $month, $listLimit+1);
+		$cities = $awSummaryDao->getCityValues($year, $month, $listLimit+1);
 		$searchwords = $awSummaryDao->getSectionValues('Search Keywords', $year, $month, $listLimit);
 
 		// exclude internal links from origin calculations
@@ -195,7 +195,7 @@ class awSummaryHandler extends Handler {
 		$toparticles_full = $awSummaryDao->getSectionValues('Pages', $year, $month, $downloadListLimit, "AND $this->sqlarticles");
 		$toparticlesnames_full = $this->_articleNames($toparticles_full);
 		$topincoming_full = $awSummaryDao->getSectionValues('Page Refs', $year, $month, $downloadListLimit);
-		$cities_full = $awSummaryDao->getSectionValues('GeoIP Cities', $year, $month, $downloadListLimit+1);
+		$cities_full = $awSummaryDao->getCityValues($year, $month, $downloadListLimit+1);
 		$searchwords_full = $awSummaryDao->getSectionValues('Search Keywords', $year, $month, $downloadListLimit);
 
 		$this->_massageCities($cities_full);

@@ -84,6 +84,51 @@ class awSummaryDAO extends DAO {
 	}
 
 	/**
+	 * Get values for the city section - for some reason page counts do not get reported for the geoip_city_maxmind awstats plugin
+	 * @return array
+	 */
+	function getCityValues($year, $month, $limit=-1) {
+		$currentJournal =& Request::getJournal();
+		$jid = $currentJournal->getId();
+
+		$result =& $this->retrieve(
+			'SELECT value1, value3 FROM awstats_summary
+				WHERE journal_id=? AND section=? AND year=? AND month=? ORDER BY CAST(value3 as signed integer) desc',
+			array($jid, 'GeoIP Cities', $year, $month)
+		);
+		$hits = array();
+		while (!$result->EOF) {
+			$row = $result->GetRowAssoc(false);
+			$hits[$row['value1']] = $row['value3'];
+			$result->MoveNext();
+		}
+		$result->Close();
+		$hitstotal = array_sum($hits);
+
+		if ($limit==-1) {
+			$result =& $this->retrieve(
+				'SELECT value1, value3 FROM awstats_summary
+					WHERE journal_id=? AND section=? AND year=? AND month=? ORDER BY CAST(value3 as signed integer) desc',
+				array($jid, 'GeoIP Cities', $year, $month)
+			);
+		} else {
+			$result =& $this->retrieve(
+				'SELECT value1, value3 FROM awstats_summary
+					WHERE journal_id=? AND section=? AND year=? AND month=? ORDER BY CAST(value3 as signed integer) desc LIMIT ?',
+				array($jid, 'GeoIP Cities', $year, $month, $limit)
+			);
+		}
+		$ret = array();
+		while (!$result->EOF) {
+			$row = $result->GetRowAssoc(false);
+			$ret[$row['value1']] = round($row['value3']/$hitstotal*100,1);
+			$result->MoveNext();
+		}
+		$result->Close();
+		return $ret;
+	}
+
+	/**
 	 * Get values for a section
 	 * @return array
 	 */

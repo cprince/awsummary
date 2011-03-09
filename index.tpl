@@ -174,9 +174,9 @@
 </div>
 
 <table class="awtable" summary="{translate key="plugins.generic.awsummary.cities"}">
-<tr align="left"><th>{translate key="plugins.generic.awsummary.cities"}</th></tr>
+<tr align="left"><th>{translate key="plugins.generic.awsummary.cities"}</th><th align="right">Percent</th></tr>
 {foreach from=$cities item=inc key=ikey}
-    <tr><td>{$ikey}</td></tr>
+    <tr><td>{$ikey}</td><td align="right">{$inc}</td></tr>
 {/foreach}
 <tr><td align="right" colspan="2" class="dnldr"><a href="{url op="download" report="cities"}">{translate key="plugins.generic.awsummary.downloadresults"}</a></td></tr>
 </table>
