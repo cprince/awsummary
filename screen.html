@@ -11,25 +11,29 @@
     body {
       margin-top: 1.0em;
       background-color: #fff;
-      font-family: "Helvetica,Arial,FreeSans";
+      font-family: san-serif;
       color: #000000;
     }
     #container {
       margin: 0 auto;
-      width: 700px;
+      width: 1200px;
     }
-    h1 { font-size: 3.8em; color: #921798; margin-bottom: 3px; }
+    h1 { font-size: 2.2em; color: #921798; margin-bottom: 3px; }
     h1 .small { font-size: 0.4em; }
     h1 a { text-decoration: none }
     h2 { font-size: 1.5em; color: #921798; }
     h3 { text-align: center; color: #921798; }
     a { color: #921798; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
+    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic; }
     .download { float: right; }
     pre { background: #000; color: #fff; padding: 15px;}
     hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
     .footer { text-align:center; padding-top:30px; font-style: italic; }
     img { border: 1px solid black }
+    .idiv { margin-top: 0.5em; margin-right: 3px; float: left; }
+    .idiv p.lab { margin: 0; padding: 0.2em; width: 40%; background-color: #999; color: #fff; }
+    .idiv img { border: 1px solid #999 }
+    .clearboth { clear: both; }
   </style>
 
 </head>
@@ -38,16 +42,17 @@
 
   <div id="container">
 
-    <h1><a href="http://github.com/cprince/awsummary">awsummary</a>
-      <span class="small">by <a href="http://github.com/cprince">cprince</a></span></h1>
+    <h1><a href="http://github.com/cprince/awsummary">awsummary</a></h1>
 
     <h2>Screen Captures</h2>
-    <img src="images/aws01.png">
-    <img src="images/aws02.png">
-    <img src="images/aws03.png">
-    <img src="images/aws04.png">
-    <img src="images/aws05.png">
-    <p><a href="screen.html">More screen captures</a></ap>
+
+    <div class="idiv"><p class="lab">Visits</p><img src="images/aws01.png"></div>
+    <div class="idiv"><p class="lab">Pages</p><img src="images/aws02.png"></div>
+    <div class="idiv"><p class="lab">Incoming Traffic</p><img src="images/aws03.png"></div>
+    <div class="idiv"><p class="lab">Incoming Searches</p><img src="images/aws04.png"></div>
+    <div class="idiv"><p class="lab">Geographic</p><img src="images/aws05.png"></div>
+
+<div class="clearboth"></div>
 
     <h2>Author</h2>
 <p>Colin Prince (colin.prince@utoronto.ca)
