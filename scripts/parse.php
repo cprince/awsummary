@@ -17,6 +17,9 @@ $year = (int)substr($awname,9,4);
 $jpath = substr($awname,$firstdot,$seconddot-$firstdot);
 $journal_id = $journals[$jpath];
 
+if (!array_key_exists($jpath,$journals))
+        die("log file not recognized: $filename\n");
+
 $itemplate = "insert into $summarytablename (journal_id, year, month, section, rank, value1, value2, value3, value4)
                  values (%d, %d, %d, '%s', %d, '%s', '%s', '%s', '%s');";
 
