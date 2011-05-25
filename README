@@ -1,5 +1,7 @@
 AWStats integration for OJS 2.3
 
+Requires PHP 5.2 or greater for the json functionality
+
 Scripts directory contains the SQL to hold the data and the PHP to process the AWStats data files.
 
 Do not store the scripts directory in a web accessible place. Instead move it to an area from which you normally run utilites, like /usr/local
