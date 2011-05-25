@@ -43,6 +43,14 @@
   width: 420px;
   height: 250px;
 }
+.awmap {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  width: 420px;
+  height: 250px;
+}
 .awtable {
   border-collapse: collapse;
   width: 420px;

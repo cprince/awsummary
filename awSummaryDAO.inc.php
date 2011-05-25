@@ -87,7 +87,7 @@ class awSummaryDAO extends DAO {
 	 * Get values for the city section - for some reason page counts do not get reported for the geoip_city_maxmind awstats plugin
 	 * @return array
 	 */
-	function getCityValues($year, $month, $limit=-1) {
+	function getCityValues($year, $month, $limit=-1, $precision=1) {
 		$currentJournal =& Request::getJournal();
 		$jid = $currentJournal->getId();
 
@@ -121,7 +121,7 @@ class awSummaryDAO extends DAO {
 		$ret = array();
 		while (!$result->EOF) {
 			$row = $result->GetRowAssoc(false);
-			$ret[$row['value1']] = round($row['value3']/$hitstotal*100,1);
+			$ret[$row['value1']] = round($row['value3']/$hitstotal*100, $precision);
 			$result->MoveNext();
 		}
 		$result->Close();

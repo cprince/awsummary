@@ -15,6 +15,8 @@
 <script type="text/javascript" src="{$fullpath}/g.raphael-min.js"></script>
 <script type="text/javascript" src="{$fullpath}/g.pie-min.js"></script>
 <script type="text/javascript" src="{$fullpath}/g.bar-min.js"></script>
+<script type="text/javascript" src="{$fullpath}/citylatlng.js"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 {literal}
 <script type="text/javascript" charset="utf-8">
     window.onload = function () {
@@ -88,6 +90,39 @@
 {literal}
         ]});
 
+/* ============================================== */
+
+{/literal}
+var cities_mappable = {$cities_mappable};
+{literal}
+        var latlng = new google.maps.LatLng(70, -179);
+        var myOptions = {
+          zoom: 1,
+          center: latlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        // map is a global variable so that it will be available in awswitch()
+        map = new google.maps.Map(document.getElementById("mapplace"), myOptions);
+
+        for (var i in cities_mappable) {
+          if (i in citylatlng) {
+            var city_latlng = new google.maps.LatLng(citylatlng[i].lat,citylatlng[i].lng);
+            var marker = new google.maps.Circle({
+                  strokeColor: "#8822DD",
+                  strokeOpacity: 0.3,
+                  strokeWeight: 1,
+                  fillColor: "#8822DD",
+                  fillOpacity: 0.22,
+                  map: map,
+                  center: city_latlng,
+                  radius: Math.log(cities_mappable[i] * 14) * 70000,
+                  title: i
+                  });
+          }
+        }
+
+/* ============================================== */
+
         awswitch('awindex');
     };
 
@@ -97,8 +132,10 @@
       document.getElementById('searchenginesholder').style.display='none';
       document.getElementById('geographicholder').style.display='none';
       document.getElementById('incoming').style.display='none';
+      document.getElementById('mapholder').style.display='none';
 
       document.getElementById(dest).style.display='block';
+      if (dest == 'mapholder') google.maps.event.trigger(map, "resize");
     }
 </script>
 {/literal}
@@ -109,6 +146,7 @@
 <button onclick="awswitch('incoming')">Incoming Traffic</button>
 <button onclick="awswitch('searchenginesholder')">Incoming Searches</button>
 <button onclick="awswitch('geographicholder')">Geographic</button>
+<button onclick="awswitch('mapholder')">Map</button>
 </div>
 
 <p><strong>{translate key="plugins.generic.awsummary.dateofstatistics"}</strong> {$datedisplay}</p>
@@ -196,6 +234,14 @@
 {/foreach}
 <tr><td align="right" colspan="2" class="dnldr"><a href="{url op="download" report="searchwords"}">{translate key="plugins.generic.awsummary.downloadresults"}</a></td></tr>
 </table>
+
+</div>
+
+
+
+<div id="mapholder">
+<div id="mapplace" class="awmap">
+</div>
 
 </div>
 

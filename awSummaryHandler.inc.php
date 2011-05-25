@@ -81,6 +81,8 @@ class awSummaryHandler extends Handler {
 	 */
 	function _assignTemplateVars($templateManager) {
 		$listLimit = 10;
+		$cityMappableLimit = 300;
+		$cityMappablePrecision = 5;
 
 		$fullpath = Request::getBaseUrl().'/'.$this->plugin->getPluginPath();
 
@@ -116,6 +118,7 @@ class awSummaryHandler extends Handler {
 		$origin = $awSummaryDao->getSectionValues('Origin', $year, $month);
 		$dpages = $awSummaryDao->getSectionValues('Domain', $year, $month);
 		$cities = $awSummaryDao->getCityValues($year, $month, $listLimit+1);
+		$cities_mappable = $awSummaryDao->getCityValues($year, $month, $cityMappableLimit+1, $cityMappablePrecision);
 		$searchwords = $awSummaryDao->getSectionValues('Search Keywords', $year, $month, $listLimit);
 
 		// exclude internal links from origin calculations
@@ -132,15 +135,19 @@ class awSummaryHandler extends Handler {
 		}
 
 		$this->_massageCities($cities);
+		$this->_massageCities($cities_mappable);
 
 		$toparticlesnames = $this->_articleNames($toparticles);
 
 		$templateManager->assign('visitsHistory', $visitsHistory);
+		$templateManager->assign('visitsHistoryjson1', json_encode(array_values($visitsHistory)));
+		$templateManager->assign('visitsHistoryjson2', json_encode(array_keys($visitsHistory)));
 		$templateManager->assign('totalpages', $totalpages);
 		$templateManager->assign('sections', $sections);
 		$templateManager->assign('origin', $origin);
 		$templateManager->assign('dpages', $dpages);
 		$templateManager->assign('cities', $cities);
+		$templateManager->assign('cities_mappable', json_encode($cities_mappable));
 		$templateManager->assign('searchwords', $searchwords);
 		$templateManager->assign('general', $general);
 		$templateManager->assign('incomingsearch', $incomingsearch);
