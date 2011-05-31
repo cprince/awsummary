@@ -66,7 +66,7 @@ class awSummaryHandler extends Handler {
 		$month = Request::getUserVar('month');
 
 		if (!($year && $month)) {
-			$sourceperiod = strtotime("last month");
+			$sourceperiod = mktime(0,0,0,date("m"),0,date("Y")); // to get last month as the source period by default
 		} else {
 			if ($month < 1) $month = 1; if ($month > 12) $month = 12;
 			if ($year < 1000) $year = 1000; if ($year > 3000) $year = 3000;
