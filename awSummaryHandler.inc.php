@@ -140,8 +140,7 @@ class awSummaryHandler extends Handler {
 		$toparticlesnames = $this->_articleNames($toparticles);
 
 		$templateManager->assign('visitsHistory', $visitsHistory);
-		$templateManager->assign('visitsHistoryjson1', json_encode(array_values($visitsHistory)));
-		$templateManager->assign('visitsHistoryjson2', json_encode(array_keys($visitsHistory)));
+		$templateManager->assign('visitsHistoryjson', json_encode(array_values($visitsHistory)));
 		$templateManager->assign('totalpages', $totalpages);
 		$templateManager->assign('sections', $sections);
 		$templateManager->assign('origin', $origin);

@@ -25,11 +25,12 @@
 
         r.g.text(200, 22, "Total Visits History").attr({"font-size": 18});
 
-        var trendchart = r.g.barchart(26, 26, 398, 198, [[
 {/literal}
-{foreach from=$visitsHistory item=visit key=period}"{$visit}",{/foreach}null
+				visitsHistoryjson = {$visitsHistoryjson};
 {literal}
-        ]], 0, {type: "sharp"});
+
+        var trendchart = r.g.barchart(26, 26, 372, 198, [visitsHistoryjson], 0, {type: "sharp"});
+
 
 {/literal}
 {assign var="perpos" value="42"}
