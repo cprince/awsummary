@@ -39,6 +39,7 @@ do {
     if ($sectionName == 'POS_DAY') $dayPos = $sectionPos;
     if ($sectionName == 'POS_SEARCHWORDS') $searchWordsPos = $sectionPos;
     if ($sectionName == 'POS_PLUGIN_geoip_city_maxmind') $cityPos = $sectionPos;
+    if ($sectionName == 'POS_PLUGIN_geoip_org_maxmind') $orgPos = $sectionPos;
 } while ($line != 'END_MAP');
 
 
@@ -92,6 +93,7 @@ processSection($f,$pagerefPos,"BEGIN_PAGEREFS","END_PAGEREFS","Page Refs");
 processSection($f,$dayPos,"BEGIN_DAY","END_DAY","Days of the Month");
 processSection($f,$searchWordsPos,"BEGIN_SEARCHWORDS","END_SEARCHWORDS","Search Keywords");
 processSection($f,$cityPos,"BEGIN_PLUGIN_geoip_city_maxmind","END_PLUGIN_geoip_city_maxmind","GeoIP Cities");
+processSection($f,$orgPos,"BEGIN_PLUGIN_geoip_org_maxmind","END_PLUGIN_geoip_org_maxmind","GeoIP Organizations");
 
 ?>
 
