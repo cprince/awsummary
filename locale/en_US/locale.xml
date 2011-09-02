@@ -20,6 +20,7 @@
   <message key="plugins.generic.awsummary.toppages">Other Popular Pages</message>
   <message key="plugins.generic.awsummary.topincoming">Incoming Links</message>
   <message key="plugins.generic.awsummary.cities">Top Cities</message>
+  <message key="plugins.generic.awsummary.orgs">Top Organizations</message>
   <message key="plugins.generic.awsummary.searchwords">Search Keywords</message>
   <message key="plugins.generic.awsummary.downloadresults">Download results</message>
 </locale>

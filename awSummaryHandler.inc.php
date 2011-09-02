@@ -61,6 +61,19 @@ class awSummaryHandler extends Handler {
 	/**
 	 * Internal method
 	 */
+	function _massageOrgs(&$orgs) {
+		$ret = array();
+		foreach ($orgs as $k => $it) {
+			$full = str_replace('_',' ',urldecode($k));
+			$ret[$full] = $it;
+		}
+		$orgs = $ret;
+	}
+
+
+	/**
+	 * Internal method
+	 */
 	function _getSourceperiod(&$sourceperiod) {
 		$year = Request::getUserVar('year');
 		$month = Request::getUserVar('month');
@@ -81,6 +94,7 @@ class awSummaryHandler extends Handler {
 	 */
 	function _assignTemplateVars($templateManager) {
 		$listLimit = 10;
+		$orgLimit = 20;
 		$cityMappableLimit = 300;
 		$cityMappablePrecision = 5;
 
@@ -119,6 +133,7 @@ class awSummaryHandler extends Handler {
 		$dpages = $awSummaryDao->getSectionValues('Domain', $year, $month);
 		$cities = $awSummaryDao->getCityValues($year, $month, $listLimit+1);
 		$cities_mappable = $awSummaryDao->getCityValues($year, $month, $cityMappableLimit+1, $cityMappablePrecision);
+		$orgs = $awSummaryDao->getOrgValues($year, $month, $orgLimit);
 		$searchwords = $awSummaryDao->getSectionValues('Search Keywords', $year, $month, $listLimit);
 
 		// exclude internal links from origin calculations
@@ -136,6 +151,7 @@ class awSummaryHandler extends Handler {
 
 		$this->_massageCities($cities);
 		$this->_massageCities($cities_mappable);
+		$this->_massageOrgs($orgs);
 
 		$toparticlesnames = $this->_articleNames($toparticles);
 
@@ -147,6 +163,7 @@ class awSummaryHandler extends Handler {
 		$templateManager->assign('dpages', $dpages);
 		$templateManager->assign('cities', $cities);
 		$templateManager->assign('cities_mappable', json_encode($cities_mappable));
+		$templateManager->assign('orgs', $orgs);
 		$templateManager->assign('searchwords', $searchwords);
 		$templateManager->assign('general', $general);
 		$templateManager->assign('incomingsearch', $incomingsearch);
@@ -179,7 +196,7 @@ class awSummaryHandler extends Handler {
 	 * Download as CSV
 	 */
 	function download() {
-		$downloadListLimit = 100;
+		$downloadListLimit = 500;
 
 		$this->validate();
 		$this->setupTemplate();
@@ -196,15 +213,18 @@ class awSummaryHandler extends Handler {
 		$month = date('n', $sourceperiod);
 
 		$datedisplay = date("F Y", $sourceperiod);
+		$templateManager->assign('datedisplay', $datedisplay);
 
 		$toppages_full = $awSummaryDao->getSectionValues('Pages', $year, $month, $downloadListLimit, "AND NOT $this->sqlarticles");
 		$toparticles_full = $awSummaryDao->getSectionValues('Pages', $year, $month, $downloadListLimit, "AND $this->sqlarticles");
 		$toparticlesnames_full = $this->_articleNames($toparticles_full);
 		$topincoming_full = $awSummaryDao->getSectionValues('Page Refs', $year, $month, $downloadListLimit);
 		$cities_full = $awSummaryDao->getCityValues($year, $month, $downloadListLimit+1);
+		$orgs_full = $awSummaryDao->getOrgValues($year, $month, $downloadListLimit+1);
 		$searchwords_full = $awSummaryDao->getSectionValues('Search Keywords', $year, $month, $downloadListLimit);
 
 		$this->_massageCities($cities_full);
+		$this->_massageOrgs($orgs_full);
 
 		foreach ($searchwords_full as $k => $sw) {
 			unset($searchwords_full[$k]);
@@ -216,6 +236,7 @@ class awSummaryHandler extends Handler {
 		$templateManager->assign('toparticlesnames_full', $toparticlesnames_full);
 		$templateManager->assign('topincoming_full', $topincoming_full);
 		$templateManager->assign('cities_full', $cities_full);
+		$templateManager->assign('orgs_full', $orgs_full);
 		$templateManager->assign('searchwords_full', $searchwords_full);
 		$templateManager->assign('report', $report);
 		$templateManager->assign('separator', ',');

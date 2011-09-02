@@ -130,6 +130,7 @@ var cities_mappable = {$cities_mappable};
     function awswitch(dest) {
       document.getElementById('awindex').style.display='none';
       document.getElementById('pages').style.display='none';
+      document.getElementById('organizations').style.display='none';
       document.getElementById('searchenginesholder').style.display='none';
       document.getElementById('geographicholder').style.display='none';
       document.getElementById('incoming').style.display='none';
@@ -144,6 +145,7 @@ var cities_mappable = {$cities_mappable};
 <div class="awnav">
 <button onclick="awswitch('awindex')">Visits</button>
 <button onclick="awswitch('pages')">Pages</button>
+<button onclick="awswitch('organizations')">Organizations</button>
 <button onclick="awswitch('incoming')">Incoming Traffic</button>
 <button onclick="awswitch('searchenginesholder')">Incoming Searches</button>
 <button onclick="awswitch('geographicholder')">Geographic</button>
@@ -186,6 +188,19 @@ var cities_mappable = {$cities_mappable};
     <tr><td><a target="_blank" href="{$ikey}">{$ikey}</a></td><td align="right">{$inc}</td></tr>
 {/foreach}
 <tr><td align="right" colspan="2" class="dnldr"><a href="{url op="download" report="toppages"}">{translate key="plugins.generic.awsummary.downloadresults"}</a></td></tr>
+</table>
+
+</div>
+
+
+<div id="organizations">
+
+<table class="awtable" summary="{translate key="plugins.generic.awsummary.orgs"}">
+<tr align="left"><th>{translate key="plugins.generic.awsummary.orgs"}</th><th align="right">Percent</th></tr>
+{foreach from=$orgs item=inc key=ikey}
+    <tr><td>{$ikey}</td><td align="right">{$inc}</td></tr>
+{/foreach}
+<tr><td align="right" colspan="2" class="dnldr"><a href="{url op="download" report="orgs"}">{translate key="plugins.generic.awsummary.downloadresults"}</a></td></tr>
 </table>
 
 </div>

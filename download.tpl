@@ -37,6 +37,13 @@
 "{$ikey}"{$separator}{$inc}
 {/foreach}
 
+{elseif $report eq 'orgs'}
+{translate key="plugins.generic.awsummary.orgs"}
+
+{foreach from=$orgs_full item=inc key=ikey}
+"{$ikey}"{$separator}{$inc}
+{/foreach}
+
 {elseif $report eq 'searchwords'}
 {translate key="plugins.generic.awsummary.searchwords"}
 
